@@ -14,8 +14,18 @@
         android:src="@drawable/ic_launcher_background"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <TextView
+        android:id="@+id/tvPhotographer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="asdada"
+        android:textSize="15sp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ivPhoto" />
     <WebView
-
+        android:visibility="invisible"
         android:id="@+id/wvPhotographer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,10 +45,10 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btnAddFavourite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/ivAddFavourite"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_margin="20dp"
         android:src="@drawable/baseline_star_24"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.example.lastproject.Constants.DATABASE_NAME
 import com.example.lastproject.data.locale.AppDatabase
 import com.example.lastproject.data.locale.CategoryDao
+import com.example.lastproject.data.locale.FavouriteDao
 import com.example.lastproject.data.locale.PhotoDao
 import com.example.lastproject.data.locale.UserDao
 import dagger.Module
@@ -38,6 +39,12 @@ object DatabaseModule {
     @Singleton
     fun providePhotoDao(appDatabase: AppDatabase) : PhotoDao{
         return appDatabase.photoDao()
+    }
+
+    @Provides
+    @Singleton
+    fun provideFavouriteDao(appDatabase: AppDatabase) : FavouriteDao{
+        return appDatabase.favouriteDao()
     }
 
 

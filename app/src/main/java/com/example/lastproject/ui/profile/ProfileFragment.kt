@@ -2,21 +2,18 @@ package com.example.lastproject.ui.profile
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
-import androidx.navigation.fragment.findNavController
 import com.example.lastproject.Extensions.showAlert
 import com.example.lastproject.Extensions.showSnackBar
 import com.example.lastproject.R
 import com.example.lastproject.data.state.GetProfileState
 import com.example.lastproject.data.state.UpdateProfileState
 import com.example.lastproject.databinding.FragmentProfileBinding
-import com.google.android.material.snackbar.Snackbar
+import com.example.lastproject.ui.dashboard.DashboardFragment.Companion.USER
 import kotlinx.coroutines.launch
 
 
@@ -29,10 +26,13 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
 
+        arguments?.getInt(USER,-1)?.let {
+            viewModel.getProfileInfo(it)
+        }
         observeMessage()
         observeUpdateProfileState()
         observeGetProfileState()
-        viewModel.getPost(1)
+
 
         binding.btnUpdate.setOnClickListener {
             viewModel.updateProfile(

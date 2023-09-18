@@ -26,6 +26,7 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
         binding = FragmentAddCategoryBinding.bind(view)
 
         listeners()
+        observeAddCategoryState()
 
     }
 
@@ -44,7 +45,8 @@ class AddCategoryFragment : Fragment(R.layout.fragment_add_category) {
                         }
 
                         AddCategoryState.Result -> {
-                            findNavController().navigate(R.id.action_addCategoryFragment_to_dashboardFragment)
+                            binding.etCategoryName.text.clear()
+                            requireContext().showAlert("Kategori eklendi")
                         }
 
                         is AddCategoryState.Error -> {}

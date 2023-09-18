@@ -12,11 +12,14 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import coil.load
+import com.example.lastproject.Extensions.showSnackBar
 import com.example.lastproject.Extensions.showToast
 import com.example.lastproject.R
 import com.example.lastproject.data.model.Photo
 import com.example.lastproject.databinding.FragmentPhotoDetailBinding
 import com.example.lastproject.ui.dashboard.DashboardFragment.Companion.PHOTOID
+import com.example.lastproject.ui.dashboard.DashboardFragment.Companion.USER
+import kotlinx.coroutines.flow.collect
 
 import kotlinx.coroutines.launch
 
@@ -25,32 +28,45 @@ class PhotoDetailFragment : Fragment(R.layout.fragment_photo_detail) {
 
     private lateinit var binding: FragmentPhotoDetailBinding
     private val viewModel: PhotoDetailFragmentViewModel by activityViewModels()
+    lateinit var photo: Photo
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPhotoDetailBinding.bind(view)
 
-        arguments?.getParcelable<Photo>(PHOTOID)?.let {photoId->
-            binding.ivPhoto.load(photoId.src.portrait)
-            binding.wvPhotographer.isVisible = true
-           // binding.wvPhotographer.setTextClassifier()
-            binding.wvPhotographer.loadUrl(photoId.photographer_url)
+        arguments?.getParcelable<Photo>(PHOTOID)?.let {
+            binding.ivPhoto.load(it.src.portrait)
+            binding.tvPhotographer.text=it.photographer
+            viewModel.checkFavourite(it)
+            photo = it
         }
-      //  observePhotoDetailState()
+
+        observeIsFavourite()
+        observeMessage()
         listeners()
     }
 
-    private fun observePhotoDetailState() {
-        viewLifecycleOwner.lifecycleScope.launch {
-            repeatOnLifecycle(Lifecycle.State.CREATED) {
-                viewModel.photoDetailState.collect {
-                    it?.let {
-
-                    }
+    private fun observeIsFavourite(){
+        viewLifecycleOwner.lifecycleScope.launch{
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.isFavourite.collect{
+                    if(it)
+                        binding.ivAddFavourite.setImageResource(R.drawable.baseline_star_24)
+                    else
+                        binding.ivAddFavourite.setImageResource(R.drawable.baseline_star_outline_24)
                 }
             }
         }
     }
-
+    private fun observeMessage(){
+        viewLifecycleOwner.lifecycleScope.launch{
+            repeatOnLifecycle(Lifecycle.State.CREATED){
+                viewModel.message.collect{
+                    if(it) requireContext().showSnackBar(binding.ivPhoto,"Favoriye Eklendi")
+                    else requireContext().showSnackBar(binding.ivPhoto,"Favorilerden Çıkarıldı")
+                }
+            }
+        }
+    }
     private fun listeners() {
         binding.btnShare.setOnClickListener {
             try {
@@ -70,5 +86,19 @@ class PhotoDetailFragment : Fragment(R.layout.fragment_photo_detail) {
                 )
             }
         }
+
+        binding.ivAddFavourite.setOnClickListener {
+            arguments?.getInt(USER,-1)?.let {
+                viewModel.insertOrDelete(photo,it)
+            }
+
+        }
+
+        binding.tvPhotographer.setOnClickListener {
+            binding.wvPhotographer.isVisible = true
+            binding.wvPhotographer.loadUrl(photo.photographer_url)
+            binding.wvPhotographer.isVisible=false
+        }
+
     }
 }

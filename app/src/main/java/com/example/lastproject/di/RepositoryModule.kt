@@ -2,6 +2,8 @@ package com.example.lastproject.di
 
 import com.example.lastproject.data.repository.CategoryRepository
 import com.example.lastproject.data.repository.CategoryRepositoryImpl
+import com.example.lastproject.data.repository.FavouriteRepository
+import com.example.lastproject.data.repository.FavouriteRepositoryImpl
 import com.example.lastproject.data.repository.LoginRepository
 import com.example.lastproject.data.repository.LoginRepositoryImpl
 import com.example.lastproject.data.repository.PhotoRepository
@@ -40,4 +42,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun providePhotoRepository(photoRepositoryImpl: PhotoRepositoryImpl) :PhotoRepository =photoRepositoryImpl
+
+    @Provides
+    @Singleton
+    fun provideFavouriteRepository(favouriteRepositoryImpl: FavouriteRepositoryImpl) : FavouriteRepository= favouriteRepositoryImpl
 }

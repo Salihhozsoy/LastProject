@@ -1,4 +1,4 @@
-package com.example.lastproject.ui.dashboard
+package com.example.lastproject.ui.adapter
 
 import android.content.Context
 import android.view.LayoutInflater

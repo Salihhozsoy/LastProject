@@ -51,17 +51,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                             AlertDialog.Builder(requireContext())
                                 .setMessage("Kullanıcı Bulunamadı Kayıt sayfasına git")
                                 .setPositiveButton(
-                                    "",
+                                    "Kayıt Ol",
                                     DialogInterface.OnClickListener { dialogInterface, i ->
                                         findNavController().navigate(R.id.action_loginFragment_to_registerFragment)
                                     }).setNegativeButton(
-                                "",
-                                DialogInterface.OnClickListener { dialogInterface, i -> cancel() })
+                                "İptal Et",
+                                DialogInterface.OnClickListener { dialogInterface, i -> dialogInterface.dismiss() })
                                 .create().show()
                         }
 
                         is LoginState.Success -> {
-                            findNavController().navigate(R.id.action_loginFragment_to_dashboardFragment)
+                            findNavController().navigate(R.id.action_loginFragment_to_dashboardFragment,
+                                bundleOf(USERID to it.userId )
+                            )
                         }
 
                         is LoginState.Error -> {}

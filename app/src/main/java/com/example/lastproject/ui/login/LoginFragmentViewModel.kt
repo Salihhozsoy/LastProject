@@ -30,19 +30,20 @@ class LoginFragmentViewModel @Inject constructor(private val loginRepository: Lo
 
                     if(emailOrUsername.contains("@")){
 
-                        if (loginRepository.loginByEmail(emailOrUsername, password) == null) {
-                            _loginState.value =LoginState.UserNotFound
-                        } else {
-                            _loginState.value = LoginState.Success
+                        loginRepository.loginByEmail(emailOrUsername, password)?.let {
+                            _loginState.value = LoginState.Success(it.id)
                             _message.emit("giriş başarılı")
+                        }?: kotlin.run {
+                            _loginState.value =LoginState.UserNotFound
                         }
+
                     }
                     else{
-                        if (loginRepository.loginByUsername(emailOrUsername, password) == null) {
-                            _loginState.value =LoginState.UserNotFound
-                        } else {
-                            _loginState.value = LoginState.Success
+                        loginRepository.loginByUsername(emailOrUsername, password)?.let {
+                            _loginState.value = LoginState.Success(it.id)
                             _message.emit("giriş başarılı")
+                        }?: kotlin.run {
+                            _loginState.value =LoginState.UserNotFound
                         }
                     }
 

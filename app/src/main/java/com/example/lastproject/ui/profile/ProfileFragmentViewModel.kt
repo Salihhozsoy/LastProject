@@ -2,7 +2,6 @@ package com.example.lastproject.ui.profile
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.lastproject.data.locale.UserEntity
 import com.example.lastproject.data.repository.RegisterRepository
 import com.example.lastproject.data.repository.UserRepository
 import com.example.lastproject.data.state.GetProfileState
@@ -33,7 +32,7 @@ class ProfileFragmentViewModel @Inject constructor(
     private val _message: MutableSharedFlow<String> = MutableSharedFlow()
     val message: SharedFlow<String> = _message
 
-    fun getPost(id: Int) {
+    fun getProfileInfo(id: Int) {
         viewModelScope.launch {
             kotlin.runCatching {
                 _getProfileState.value = GetProfileState.Loading
