@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id ("kotlin-kapt")
     id ("com.google.dagger.hilt.android")
+    id ("kotlin-parcelize")
 }
 
 android {
@@ -77,6 +78,8 @@ dependencies {
     implementation("io.coil-kt:coil:2.4.0")
 
     //DaggerHilt
-    implementation ("com.google.dagger:hilt-android:2.47")
-    kapt ("com.google.dagger:hilt-compiler:2.47")
+    implementation ("com.google.dagger:hilt-android:2.44")
+    kapt ("com.google.dagger:hilt-compiler:2.44")
+
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 }
