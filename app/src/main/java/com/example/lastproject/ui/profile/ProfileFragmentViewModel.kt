@@ -3,17 +3,23 @@ package com.example.lastproject.ui.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lastproject.data.locale.UserEntity
+import com.example.lastproject.data.repository.RegisterRepository
 import com.example.lastproject.data.repository.UserRepository
 import com.example.lastproject.data.state.GetProfileState
 import com.example.lastproject.data.state.UpdateProfileState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ProfileFragmentViewModel @Inject constructor(private val userRepository: UserRepository) :
+class ProfileFragmentViewModel @Inject constructor(
+    private val userRepository: UserRepository,
+    private val registerRepository: RegisterRepository
+) :
     ViewModel() {
 
     private val _getProfileState: MutableStateFlow<GetProfileState> =
@@ -24,10 +30,12 @@ class ProfileFragmentViewModel @Inject constructor(private val userRepository: U
         MutableStateFlow(UpdateProfileState.Idle)
     val updateProfileState: StateFlow<UpdateProfileState> = _updateProfileState
 
+    private val _message: MutableSharedFlow<String> = MutableSharedFlow()
+    val message: SharedFlow<String> = _message
+
     fun getPost(id: Int) {
         viewModelScope.launch {
             kotlin.runCatching {
-
                 _getProfileState.value = GetProfileState.Loading
                 val post = userRepository.getProfileById(id)
                 _getProfileState.value = GetProfileState.Success(post)
@@ -38,20 +46,34 @@ class ProfileFragmentViewModel @Inject constructor(private val userRepository: U
         }
     }
 
-    fun updateProfile(usernameOrUserName: String ,password: String) {
+    fun updateProfile(username: String, email: String, password: String) {
         viewModelScope.launch {
-            kotlin.runCatching {
-                _updateProfileState.value = UpdateProfileState.Loading
+            if (username.isNotEmpty() && email.isNotEmpty() && password.isNotEmpty()) {
+                kotlin.runCatching {
+                    _updateProfileState.value = UpdateProfileState.Loading
 
-                if(usernameOrUserName.contains("@")){
-                    val user = UserEntity(username = "", email = usernameOrUserName, password = password)
-                    userRepository.updateProfile(user)
-                }else{
-                    val user=UserEntity(username = usernameOrUserName, email = "", password = password )
-                    userRepository.updateProfile(user)
+                    if (registerRepository.getUserByUsername(username) == null && registerRepository.getUserByEmail(email) == null) {
+                        val user = if(_getProfileState.value is GetProfileState.Success) (_getProfileState.value as GetProfileState.Success).user
+                        else null
+                        user?.let {
+                           val user=it.copy(username=username, email = email, password = password)
+                            userRepository.updateProfile(user)
+                            _updateProfileState.value = UpdateProfileState.Success
+                            _updateProfileState.value = UpdateProfileState.Idle
+                        }
+
+                    } else {
+                        _message.emit("lütfen farklı bir email ya da kullanıcı adı giriniz")
+                        _updateProfileState.value = UpdateProfileState.AlreadyUser
+                    }
+                }.onFailure {
+                    _updateProfileState.value = UpdateProfileState.Error
+                    _message.emit("güncelleme işlemi yapılamadı")
                 }
-                _updateProfileState.value = UpdateProfileState.Success
+            } else {
+                _message.emit("boş alan bırakmayınız")
             }
+
         }
     }
 }

@@ -9,7 +9,7 @@ import androidx.room.Update
 @Dao
 interface UserDao {
 
-    @Query("select * from UserEntity where email=:email and password =:password")
+    @Query("SELECT * FROM UserEntity WHERE email=:email AND password =:password")
     suspend fun getUserControlByEmail(email: String, password: String): UserEntity?
 
     @Query("select * from UserEntity where username=:username and password =:password")
@@ -18,7 +18,7 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(user: UserEntity)
 
-    @Query("select * from UserEntity where email=:email")
+    @Query("SELECT * FROM UserEntity WHERE email=:email")
      suspend fun getUserByEmail(email: String): UserEntity?
 
     @Query("select * from UserEntity where username=:username")

@@ -16,6 +16,6 @@ interface PhotoService {
 
     @GET("v1/search")
     suspend fun getAllPhotos(@Query("query")queryText:String) : Response<List<Photo>>
-    @GET("v1/photos/{id}")
+    @GET("v1/photos/:{id}")
     suspend fun getPhotoById(@Path("id") id:Int) : Photo
 }

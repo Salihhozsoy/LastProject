@@ -14,8 +14,10 @@ import androidx.lifecycle.repeatOnLifecycle
 import coil.load
 import com.example.lastproject.Extensions.showToast
 import com.example.lastproject.R
+import com.example.lastproject.data.model.Photo
 import com.example.lastproject.databinding.FragmentPhotoDetailBinding
 import com.example.lastproject.ui.dashboard.DashboardFragment.Companion.PHOTOID
+
 import kotlinx.coroutines.launch
 
 
@@ -27,13 +29,14 @@ class PhotoDetailFragment : Fragment(R.layout.fragment_photo_detail) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentPhotoDetailBinding.bind(view)
 
-        observePhotoDetailState()
-        listeners()
-
-        arguments?.getInt(PHOTOID, -1)?.let { photoId ->
-            viewModel.getPhotoById(photoId)
+        arguments?.getParcelable<Photo>(PHOTOID)?.let {photoId->
+            binding.ivPhoto.load(photoId.src.portrait)
+            binding.wvPhotographer.isVisible = true
+           // binding.wvPhotographer.setTextClassifier()
+            binding.wvPhotographer.loadUrl(photoId.photographer_url)
         }
-
+      //  observePhotoDetailState()
+        listeners()
     }
 
     private fun observePhotoDetailState() {
@@ -41,9 +44,7 @@ class PhotoDetailFragment : Fragment(R.layout.fragment_photo_detail) {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 viewModel.photoDetailState.collect {
                     it?.let {
-                        binding.ivPhoto.load(it.src.portrait)
-                        binding.wvPhotographer.isVisible = true
-                        binding.wvPhotographer.loadUrl(it.photographer_url)
+
                     }
                 }
             }

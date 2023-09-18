@@ -24,11 +24,12 @@ class RegisterFragmentViewModel @Inject constructor(private val registerReposito
 
     fun register(emailOrUsername: String, password: String, confirm: String) {
         viewModelScope.launch {
-            kotlin.runCatching {
-                if (emailOrUsername.isNotEmpty() || password.isNotEmpty() || confirm.isNotEmpty()) {
+
+                if (emailOrUsername.isNotEmpty() && password.isNotEmpty() && confirm.isNotEmpty()) {
                     _registerState.value = RegisterState.Loading
 
                     if(emailOrUsername.contains("@")){
+                        kotlin.runCatching {
                         if(registerRepository.getUserByEmail(emailOrUsername) == null){
                             if(password==confirm){
                                 val user = UserEntity(email = emailOrUsername, password = password, username = "x")
@@ -42,6 +43,10 @@ class RegisterFragmentViewModel @Inject constructor(private val registerReposito
                         }else{
                             _registerState.value = RegisterState.UserAlready
                             _message.emit("bu maile sahip kullanıcı zaten var")
+                        }
+                        }.onFailure {
+                            _registerState.value = RegisterState.Error(it)
+                            _message.emit("kullanıcı eklenirken sorun oluştu $it")
                         }
                     }
                     else{
@@ -64,10 +69,7 @@ class RegisterFragmentViewModel @Inject constructor(private val registerReposito
                 } else {
                     _message.emit("boş alan bırakmayınız")
                 }
-            }.onFailure {
-                _registerState.value = RegisterState.Error(it)
-                _message.emit("kullanıcı eklenirken sorun oluştu $it")
-            }
+
         }
     }
 }

@@ -18,13 +18,9 @@ class PhotoAdapter(
 
     class CustomViewHolder(binding: PhotoListItemBinding) : RecyclerView.ViewHolder(binding.root) {
         val ivPhoto = binding.ivPhoto
-
     }
 
-    override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
-    ): CustomViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CustomViewHolder {
         val binding = PhotoListItemBinding.inflate(LayoutInflater.from(context), parent, false)
         return CustomViewHolder(binding)
     }
@@ -32,17 +28,16 @@ class PhotoAdapter(
     override fun onBindViewHolder(holder: CustomViewHolder, position: Int) {
         val photo = photos[position]
         holder.ivPhoto.load(photo.src.portrait)
+
         holder.itemView.setOnLongClickListener {
             val animation = AnimationUtils.loadAnimation(context, R.anim.animation)
             holder.ivPhoto.animation = animation
             animation.start()
+            onClick(photo)
             return@setOnLongClickListener true
         }
-        holder.ivPhoto.setOnClickListener {
-            onClick(photo)
-        }
-
     }
+
 
     override fun getItemCount(): Int {
         return photos.size

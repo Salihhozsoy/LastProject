@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import coil.load
 import com.example.lastproject.R
 import com.example.lastproject.data.model.Photo
@@ -29,5 +30,6 @@ class LongClickFragment(private val photo:Photo) : BottomSheetDialogFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         binding.ivPhoto.load(photo.src.portrait)
+
     }
 }

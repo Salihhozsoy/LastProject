@@ -71,4 +71,13 @@
             android:id="@+id/action_profileFragment_to_dashboardFragment"
             app:destination="@id/dashboardFragment" />
     </fragment>
+    <dialog
+        android:id="@+id/longClickFragment"
+        android:name="com.example.lastproject.ui.longclick.LongClickFragment"
+        android:label="fragment_long_click"
+        tools:layout="@layout/fragment_long_click" >
+        <action
+            android:id="@+id/action_longClickFragment_to_photoDetailFragment"
+            app:destination="@id/photoDetailFragment" />
+    </dialog>
 </navigation>

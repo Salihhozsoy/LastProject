@@ -20,6 +20,7 @@ import com.example.lastproject.data.state.GetCategoryState
 import com.example.lastproject.data.state.PhotoListState
 import com.example.lastproject.databinding.FragmentDashboardBinding
 import com.example.lastproject.ui.longclick.LongClickFragment
+import com.example.lastproject.ui.photodetail.PhotoDetailFragment
 import kotlinx.coroutines.launch
 
 
@@ -27,8 +28,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel:DashboardFragmentViewModel by activityViewModels()
+
     companion object{
-        const val PHOTOID="photoid"
+        const val PHOTOID = "photoId"
     }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -55,7 +57,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                             binding.llAddCategory.isVisible = false
                             binding.llTakePicture.isVisible = false
                             binding.rvPhotos.isVisible = true
-                            binding.spCategories.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,it.categories)
+                            binding.spCategories.adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,it.categories.map { it.categoryName })
 
                         }
 
@@ -83,6 +85,9 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
     }
     private fun listeners(){
+        binding.btnAddIcon.setOnClickListener {
+            findNavController().navigate(R.id.action_dashboardFragment_to_addCategoryFragment)
+        }
         binding.btnAddCategory.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_addCategoryFragment)
         }
@@ -102,13 +107,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
     }
     private fun onClick(photo: Photo) {
-       // val photoDetailFragment = LongClickFragment(photo)
-      //  photoDetailFragment.show(supportFragmentManager, null)
+        val photoDetailFragment = LongClickFragment(photo)
+        photoDetailFragment.show(requireActivity().supportFragmentManager, null)
 
-        findNavController().navigate(R.id.action_dashboardFragment_to_photoDetailFragment,
-            bundleOf(PHOTOID to photo.id)
-
-        )
+        val bundle= bundleOf()
+        bundle.putParcelable(PHOTOID,photo)
+        val photoDetailFragment2 =PhotoDetailFragment()
+        photoDetailFragment2.arguments= bundle
+        findNavController().navigate(R.id.action_dashboardFragment_to_photoDetailFragment,bundle)
     }
 
 }
