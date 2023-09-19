@@ -1,5 +1,6 @@
 package com.example.lastproject.ui.dashboard
 
+import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lastproject.data.locale.entity.CategoryEntity
@@ -83,6 +84,11 @@ class DashboardFragmentViewModel @Inject constructor(
                 selectedCategory.value = category
                 getAllPhotos(category.categoryName.toString())
             }
+        }
+    }
+    fun saveToDb(photo:Bitmap){
+        viewModelScope.launch {
+
         }
     }
 }

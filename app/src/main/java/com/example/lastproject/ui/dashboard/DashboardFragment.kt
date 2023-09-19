@@ -1,10 +1,16 @@
 package com.example.lastproject.ui.dashboard
 
+import android.app.Activity.RESULT_OK
+import android.content.ActivityNotFoundException
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
+import android.provider.MediaStore
 import androidx.fragment.app.Fragment
 import android.view.View
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.activityViewModels
@@ -30,11 +36,11 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardFragmentViewModel by activityViewModels()
     private var isNetCheck:Boolean =true
+    val REQUEST_IMAGE_CAPTURE=100
 
     companion object {
         const val PHOTOID = "photoId"
         const val USER = "userId"
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -46,7 +52,28 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         observeInternetConnection()
         listeners()
         viewModel.getAllCategory()
+
+        binding.btnTakePhotoRight.setOnClickListener {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+
+            try{
+                startActivityForResult(takePictureIntent,REQUEST_IMAGE_CAPTURE)
+            }catch (e:ActivityNotFoundException){
+                Toast.makeText(requireContext(),"Error: " + e.localizedMessage,Toast.LENGTH_LONG).show()
+            }
+        }
+
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode==REQUEST_IMAGE_CAPTURE && resultCode==RESULT_OK){
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            //
+        }else{
+            super.onActivityResult(requestCode,resultCode, data)
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
 
     private fun observeInternetConnection() {
         lifecycleScope.launch {
@@ -144,8 +171,16 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             findNavController().navigate(R.id.action_dashboardFragment_to_addCategoryFragment)
         }
         binding.btnTakePicture.setOnClickListener {
+            val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
 
+            try{
+                startActivityForResult(takePictureIntent,REQUEST_IMAGE_CAPTURE)
+            }catch (e:ActivityNotFoundException){
+                Toast.makeText(requireContext(),"Error: " + e.localizedMessage,Toast.LENGTH_LONG).show()
+            }
         }
+
+
         binding.btnProfilePage.setOnClickListener {
             if (userId != null)
                 findNavController().navigate(
@@ -172,6 +207,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 findNavController().navigate(R.id.action_dashboardFragment_to_favouritesFragment, bundleOf(USER to userId))
         }
     }
+
 
     private fun onClick(photo: Photo) {
         val userId = arguments?.getInt(USERID, -1)
