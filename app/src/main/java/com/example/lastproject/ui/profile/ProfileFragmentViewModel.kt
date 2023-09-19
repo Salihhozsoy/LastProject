@@ -46,10 +46,18 @@ class ProfileFragmentViewModel @Inject constructor(
             }
         }
     }
-    fun updateProfilePhoto(userEntity: UserEntity){
-        viewModelScope.launch{
-            kotlin.runCatching {
-                userRepository.updateProfile(userEntity)
+    fun updateProfilePhoto(uri: Uri){
+        viewModelScope.launch {
+            runCatching {
+                _updateProfileState.value = UpdateProfileState.Loading
+                val user = if(_getProfileState.value is GetProfileState.Success) (_getProfileState.value as GetProfileState.Success).user
+                else null
+                user?.let {
+                    val user=it.copy(profileImageUrl = uri.toString())
+                    userRepository.updateProfile(user)
+                    _updateProfileState.value = UpdateProfileState.Success
+                    _updateProfileState.value = UpdateProfileState.Idle
+                }
             }
         }
     }

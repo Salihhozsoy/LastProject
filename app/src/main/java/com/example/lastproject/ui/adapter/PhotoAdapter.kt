@@ -13,7 +13,8 @@ import com.example.lastproject.databinding.PhotoListItemBinding
 class PhotoAdapter(
     private val context: Context,
     private var photos: List<Photo>,
-    val onClick: (photo: Photo) -> Unit
+    val onClick: (photo: Photo) -> Unit,
+    val onLongClick: (photo: Photo) -> Unit
 ) : RecyclerView.Adapter<PhotoAdapter.CustomViewHolder>() {
 
     class CustomViewHolder(binding: PhotoListItemBinding) : RecyclerView.ViewHolder(binding.root) {
@@ -30,12 +31,13 @@ class PhotoAdapter(
         holder.ivPhoto.load(photo.src.portrait)
 
         holder.itemView.setOnLongClickListener {
-            val animation = AnimationUtils.loadAnimation(context, R.anim.animation)
-            holder.ivPhoto.animation = animation
-            animation.start()
-            onClick(photo)
+            onLongClick(photo)
             return@setOnLongClickListener true
         }
+        holder.itemView.setOnClickListener{
+            onClick(photo)
+        }
+
     }
 
 

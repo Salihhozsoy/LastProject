@@ -24,7 +24,14 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private lateinit var binding: FragmentProfileBinding
     private val viewModel: ProfileFragmentViewModel by activityViewModels()
-
+    private val pickMedia = registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { uri ->
+        if (uri != null) {
+            binding.civProfilePhoto.load(uri)
+            viewModel.updateProfilePhoto(uri)
+        } else {
+            //
+        }
+    }
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentProfileBinding.bind(view)
@@ -94,6 +101,9 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                 binding.etEmail.text.toString().trim(),
                 binding.etPassword.text.toString().trim()
             )
+        }
+        binding.btnEdit.setOnClickListener {
+            pickMedia.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
         }
     }
 }

@@ -57,7 +57,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                             isNetCheck = true
                             binding.rvPhotos.isVisible =true
                             binding.btnAddIcon.isVisible=true
-                            binding.rvPhotos.isVisible=true
                             binding.btnFavouriteList.isVisible=true
                             binding.spCategories.isVisible=true
                         }
@@ -123,7 +122,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                             binding.rvPhotos.adapter = PhotoAdapter(
                                 requireContext(),
                                 it.photos,
-                                this@DashboardFragment::onClick
+                                this@DashboardFragment::onClick,
+                                this@DashboardFragment::onLongClick
                             )
                         }
 
@@ -136,7 +136,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun listeners() {
         val userId = arguments?.getInt(USERID, -1)
-        binding.btnProfilePage.text=""
+
         binding.btnAddIcon.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_addCategoryFragment)
         }
@@ -175,15 +175,16 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun onClick(photo: Photo) {
         val userId = arguments?.getInt(USERID, -1)
-        val photoDetailFragment = LongClickFragment(photo)
-        photoDetailFragment.show(requireActivity().supportFragmentManager, null)
-
         val bundle = bundleOf()
         bundle.putParcelable(PHOTOID, photo)
         if (userId != null) bundle.putInt(USER, userId)
         val photoDetailFragment2 = PhotoDetailFragment()
         photoDetailFragment2.arguments = bundle
         findNavController().navigate(R.id.action_dashboardFragment_to_photoDetailFragment, bundle)
+    }
+    private fun onLongClick(photo:Photo){
+        val photoDetailFragment = LongClickFragment(photo)
+        photoDetailFragment.show(requireActivity().supportFragmentManager, null)
     }
 
 }
