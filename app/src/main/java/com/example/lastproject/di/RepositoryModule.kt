@@ -10,6 +10,8 @@ import com.example.lastproject.data.repository.PhotoRepository
 import com.example.lastproject.data.repository.PhotoRepositoryImpl
 import com.example.lastproject.data.repository.RegisterRepository
 import com.example.lastproject.data.repository.RegisterRepositoryImpl
+import com.example.lastproject.data.repository.TakenPhotoRepository
+import com.example.lastproject.data.repository.TakenPhotoRepositoryImpl
 import com.example.lastproject.data.repository.UserRepository
 import com.example.lastproject.data.repository.UserRepositoryImpl
 import dagger.Module
@@ -46,4 +48,8 @@ object RepositoryModule {
     @Provides
     @Singleton
     fun provideFavouriteRepository(favouriteRepositoryImpl: FavouriteRepositoryImpl) : FavouriteRepository= favouriteRepositoryImpl
+
+    @Provides
+    @Singleton
+    fun provideTakenPhotoRepository(takenPhotoRepositoryImpl: TakenPhotoRepositoryImpl) :TakenPhotoRepository = takenPhotoRepositoryImpl
 }

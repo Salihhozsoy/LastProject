@@ -1,13 +1,17 @@
 package com.example.lastproject.ui.dashboard
 
 import android.graphics.Bitmap
+import android.media.Image
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.lastproject.data.locale.entity.CategoryEntity
+import com.example.lastproject.data.locale.entity.TakenPhotoEntity
 import com.example.lastproject.data.repository.CategoryRepository
 import com.example.lastproject.data.repository.PhotoRepository
+import com.example.lastproject.data.repository.TakenPhotoRepository
 import com.example.lastproject.data.state.GetCategoryState
 import com.example.lastproject.data.state.PhotoListState
+import com.example.lastproject.data.state.TakenPhotosListState
 import com.example.lastproject.util.ConnectivityObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,12 +24,17 @@ import javax.inject.Inject
 class DashboardFragmentViewModel @Inject constructor(
     private val photoRepository: PhotoRepository,
     private val categoryRepository: CategoryRepository,
-    private val connectivityObserver: ConnectivityObserver
+    private val connectivityObserver: ConnectivityObserver,
+    private val takenPhotoRepository: TakenPhotoRepository
 ) : ViewModel() {
 
     private val _photoListState: MutableStateFlow<PhotoListState> =
         MutableStateFlow(PhotoListState.Idle)
     val photoListState: StateFlow<PhotoListState> = _photoListState
+
+    private val _takenPhotosListState: MutableStateFlow<TakenPhotosListState> =
+        MutableStateFlow(TakenPhotosListState.Idle)
+    val takenPhotosListState: StateFlow<TakenPhotosListState> = _takenPhotosListState
 
     private var _getCategoryState: MutableStateFlow<GetCategoryState> =
         MutableStateFlow(GetCategoryState.Idle)
@@ -61,6 +70,20 @@ class DashboardFragmentViewModel @Inject constructor(
             }
         }
     }
+     fun getAllTakenPhotos(){
+        viewModelScope.launch {
+            kotlin.runCatching {
+                _takenPhotosListState.value = TakenPhotosListState.Loading
+                val takenPhotos = takenPhotoRepository.getAllTakenPhotos()
+                if (takenPhotos.isEmpty()) _takenPhotosListState.value = TakenPhotosListState.Empty
+                else _takenPhotosListState.value = TakenPhotosListState.Result(takenPhotos)
+            }.onFailure {
+                _takenPhotosListState.value = TakenPhotosListState.Error
+                it.printStackTrace()
+            }
+            }
+        }
+
 
     fun getAllCategory() {
         viewModelScope.launch {
@@ -86,9 +109,12 @@ class DashboardFragmentViewModel @Inject constructor(
             }
         }
     }
-    fun saveToDb(photo:Bitmap){
+    fun saveToDb(photo:ByteArray){
         viewModelScope.launch {
-
+            kotlin.runCatching {
+                val taken= TakenPhotoEntity(image = photo)
+                takenPhotoRepository.insert(taken)
+            }
         }
     }
 }

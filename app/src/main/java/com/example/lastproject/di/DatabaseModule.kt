@@ -7,6 +7,7 @@ import com.example.lastproject.data.locale.AppDatabase
 import com.example.lastproject.data.locale.dao.CategoryDao
 import com.example.lastproject.data.locale.dao.FavouriteDao
 import com.example.lastproject.data.locale.dao.PhotoDao
+import com.example.lastproject.data.locale.dao.TakenPhotoDao
 import com.example.lastproject.data.locale.dao.UserDao
 import dagger.Module
 import dagger.Provides
@@ -45,6 +46,11 @@ object DatabaseModule {
     @Singleton
     fun provideFavouriteDao(appDatabase: AppDatabase) : FavouriteDao {
         return appDatabase.favouriteDao()
+    }
+    @Provides
+    @Singleton
+    fun provideTakenPhotoDao(appDatabase: AppDatabase) : TakenPhotoDao{
+        return appDatabase.takenPhotoDao()
     }
 
 
