@@ -1,4 +1,4 @@
-package com.example.lastproject.data.locale
+package com.example.lastproject.data.locale.entity
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

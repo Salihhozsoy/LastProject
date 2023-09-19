@@ -4,10 +4,10 @@ import android.content.Context
 import androidx.room.Room
 import com.example.lastproject.Constants.DATABASE_NAME
 import com.example.lastproject.data.locale.AppDatabase
-import com.example.lastproject.data.locale.CategoryDao
-import com.example.lastproject.data.locale.FavouriteDao
-import com.example.lastproject.data.locale.PhotoDao
-import com.example.lastproject.data.locale.UserDao
+import com.example.lastproject.data.locale.dao.CategoryDao
+import com.example.lastproject.data.locale.dao.FavouriteDao
+import com.example.lastproject.data.locale.dao.PhotoDao
+import com.example.lastproject.data.locale.dao.UserDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -37,13 +37,13 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun providePhotoDao(appDatabase: AppDatabase) : PhotoDao{
+    fun providePhotoDao(appDatabase: AppDatabase) : PhotoDao {
         return appDatabase.photoDao()
     }
 
     @Provides
     @Singleton
-    fun provideFavouriteDao(appDatabase: AppDatabase) : FavouriteDao{
+    fun provideFavouriteDao(appDatabase: AppDatabase) : FavouriteDao {
         return appDatabase.favouriteDao()
     }
 

@@ -1,9 +1,10 @@
-package com.example.lastproject.data.locale
+package com.example.lastproject.data.locale.dao
 
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.lastproject.data.locale.entity.FavouriteEntity
 
 @Dao
 interface FavouriteDao {

@@ -1,9 +1,8 @@
 package com.example.lastproject.data.repository
 
-import com.example.lastproject.data.locale.CategoryDao
-import com.example.lastproject.data.locale.CategoryEntity
+import com.example.lastproject.data.locale.dao.CategoryDao
+import com.example.lastproject.data.locale.entity.CategoryEntity
 import com.example.lastproject.data.state.AddCategoryState
-import com.example.lastproject.data.state.RegisterState
 import javax.inject.Inject
 
 class CategoryRepositoryImpl @Inject constructor(private val categoryDao: CategoryDao):CategoryRepository {

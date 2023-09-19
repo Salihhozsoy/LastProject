@@ -21,6 +21,7 @@ import com.example.lastproject.ui.adapter.PhotoAdapter
 import com.example.lastproject.ui.login.LoginFragment.Companion.USERID
 import com.example.lastproject.ui.longclick.LongClickFragment
 import com.example.lastproject.ui.photodetail.PhotoDetailFragment
+import com.example.lastproject.util.ConnectivityObserver
 import kotlinx.coroutines.launch
 
 
@@ -28,6 +29,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private lateinit var binding: FragmentDashboardBinding
     private val viewModel: DashboardFragmentViewModel by activityViewModels()
+    private var isNetCheck:Boolean =true
 
     companion object {
         const val PHOTOID = "photoId"
@@ -39,19 +41,41 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         super.onViewCreated(view, savedInstanceState)
         binding = FragmentDashboardBinding.bind(view)
 
-
-        val bundle = arguments
-
-        val id = bundle?.getInt(USERID)
-
-        if (id != null) {
-
-        }
-
         observePhotoListState()
         observeGetCategoryState()
+        observeInternetConnection()
         listeners()
         viewModel.getAllCategory()
+    }
+
+    private fun observeInternetConnection() {
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.connectivityStatus.collect {
+                    when (it) {
+                        ConnectivityObserver.NetworkStatus.Available -> {
+                            isNetCheck = true
+                            binding.rvPhotos.isVisible =true
+                            binding.btnAddIcon.isVisible=true
+                            binding.rvPhotos.isVisible=true
+                            binding.btnFavouriteList.isVisible=true
+                            binding.spCategories.isVisible=true
+                        }
+
+                        else -> {
+                            isNetCheck = false
+                            binding.llTakePicture.isVisible = true
+                            binding.llAddCategory.isVisible = false
+                            binding.rvPhotos.isVisible =false
+                            binding.btnAddIcon.isVisible=false
+                            binding.rvPhotos.isVisible=false
+                            binding.btnFavouriteList.isVisible=false
+                            binding.spCategories.isVisible=false
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun observeGetCategoryState() {
@@ -67,14 +91,17 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         }
 
                         is GetCategoryState.Success -> {
+                            if(isNetCheck){
+                                binding.llTakePicture.isVisible = false
+
+                            }
                             binding.llAddCategory.isVisible = false
-                            binding.llTakePicture.isVisible = false
                             binding.rvPhotos.isVisible = true
                             binding.spCategories.adapter = ArrayAdapter(
                                 requireContext(),
                                 android.R.layout.simple_list_item_1,
                                 it.categories.map { it.categoryName })
-
+                            binding.btnProfilePage.text="Profile"
                         }
 
                         is GetCategoryState.Error -> {}
@@ -109,6 +136,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     private fun listeners() {
         val userId = arguments?.getInt(USERID, -1)
+        binding.btnProfilePage.text=""
         binding.btnAddIcon.setOnClickListener {
             findNavController().navigate(R.id.action_dashboardFragment_to_addCategoryFragment)
         }

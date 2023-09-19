@@ -1,14 +1,15 @@
-package com.example.lastproject.data.locale
+package com.example.lastproject.data.locale.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import com.example.lastproject.data.locale.entity.CategoryEntity
 
 @Dao
 interface CategoryDao {
 
     @Insert
-    suspend fun insert(category:CategoryEntity)
+    suspend fun insert(category: CategoryEntity)
 
     @Query("select * from CategoryEntity")
     suspend fun getCategories() :List<CategoryEntity>

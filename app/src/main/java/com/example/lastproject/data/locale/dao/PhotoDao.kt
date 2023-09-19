@@ -1,4 +1,4 @@
-package com.example.lastproject.data.locale
+package com.example.lastproject.data.locale.dao
 
 import androidx.room.Dao
 

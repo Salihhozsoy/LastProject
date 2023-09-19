@@ -1,6 +1,6 @@
 package com.example.lastproject.data.repository
 
-import com.example.lastproject.data.locale.UserEntity
+import com.example.lastproject.data.locale.entity.UserEntity
 
 interface UserRepository {
 

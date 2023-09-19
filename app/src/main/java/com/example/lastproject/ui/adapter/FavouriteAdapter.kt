@@ -3,14 +3,10 @@ package com.example.lastproject.ui.adapter
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
-import com.example.lastproject.R
-import com.example.lastproject.data.locale.FavouriteEntity
-import com.example.lastproject.data.model.Photo
+import com.example.lastproject.data.locale.entity.FavouriteEntity
 import com.example.lastproject.databinding.FavouriteListItemBinding
-import com.example.lastproject.databinding.PhotoListItemBinding
 
 class FavouriteAdapter(
     private val context: Context,

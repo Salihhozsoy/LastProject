@@ -1,7 +1,9 @@
 package com.example.lastproject.ui.profile
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.lastproject.data.locale.entity.UserEntity
 import com.example.lastproject.data.repository.RegisterRepository
 import com.example.lastproject.data.repository.UserRepository
 import com.example.lastproject.data.state.GetProfileState
@@ -41,6 +43,13 @@ class ProfileFragmentViewModel @Inject constructor(
 
             }.onFailure {
                 _getProfileState.value = GetProfileState.Error
+            }
+        }
+    }
+    fun updateProfilePhoto(userEntity: UserEntity){
+        viewModelScope.launch{
+            kotlin.runCatching {
+                userRepository.updateProfile(userEntity)
             }
         }
     }

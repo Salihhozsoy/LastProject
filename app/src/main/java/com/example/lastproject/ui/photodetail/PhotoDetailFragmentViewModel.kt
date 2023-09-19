@@ -2,10 +2,9 @@ package com.example.lastproject.ui.photodetail
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.lastproject.data.locale.FavouriteEntity
+import com.example.lastproject.data.locale.entity.FavouriteEntity
 import com.example.lastproject.data.model.Photo
 import com.example.lastproject.data.repository.FavouriteRepository
-import com.example.lastproject.data.repository.PhotoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

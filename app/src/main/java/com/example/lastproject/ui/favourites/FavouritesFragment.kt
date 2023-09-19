@@ -2,9 +2,7 @@ package com.example.lastproject.ui.favourites
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -12,7 +10,6 @@ import androidx.lifecycle.repeatOnLifecycle
 import com.example.lastproject.Extensions.showAlert
 import com.example.lastproject.Extensions.showSnackBar
 import com.example.lastproject.R
-import com.example.lastproject.data.locale.FavouriteEntity
 import com.example.lastproject.data.state.FavouriteListState
 import com.example.lastproject.databinding.FragmentFavouritesBinding
 import com.example.lastproject.ui.adapter.AdapterState

@@ -2,7 +2,7 @@ package com.example.lastproject.ui.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.lastproject.data.locale.UserEntity
+import com.example.lastproject.data.locale.entity.UserEntity
 import com.example.lastproject.data.repository.RegisterRepository
 import com.example.lastproject.data.state.RegisterState
 import dagger.hilt.android.lifecycle.HiltViewModel

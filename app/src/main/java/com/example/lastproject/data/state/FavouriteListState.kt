@@ -1,6 +1,6 @@
 package com.example.lastproject.data.state
 
-import com.example.lastproject.data.locale.FavouriteEntity
+import com.example.lastproject.data.locale.entity.FavouriteEntity
 
 sealed class FavouriteListState {
     object Idle : FavouriteListState()

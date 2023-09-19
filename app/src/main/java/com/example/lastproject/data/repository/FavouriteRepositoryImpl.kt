@@ -1,7 +1,7 @@
 package com.example.lastproject.data.repository
 
-import com.example.lastproject.data.locale.FavouriteDao
-import com.example.lastproject.data.locale.FavouriteEntity
+import com.example.lastproject.data.locale.dao.FavouriteDao
+import com.example.lastproject.data.locale.entity.FavouriteEntity
 import javax.inject.Inject
 
 class FavouriteRepositoryImpl @Inject constructor(private val favouriteDao: FavouriteDao):FavouriteRepository {

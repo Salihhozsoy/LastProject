@@ -1,13 +1,10 @@
 package com.example.lastproject.ui.addcategory
 
-import android.app.AlertDialog
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.lastproject.data.locale.CategoryEntity
-import com.example.lastproject.data.locale.UserEntity
+import com.example.lastproject.data.locale.entity.CategoryEntity
 import com.example.lastproject.data.repository.CategoryRepository
 import com.example.lastproject.data.state.AddCategoryState
-import com.example.lastproject.data.state.RegisterState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

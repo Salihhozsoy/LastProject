@@ -1,6 +1,6 @@
 package com.example.lastproject.data.state
 
-import com.example.lastproject.data.locale.CategoryEntity
+import com.example.lastproject.data.locale.entity.CategoryEntity
 
 sealed class GetCategoryState{
 

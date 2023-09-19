@@ -3,10 +3,13 @@ package com.example.lastproject.ui.profile
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import coil.load
 import com.example.lastproject.Extensions.showAlert
 import com.example.lastproject.Extensions.showSnackBar
 import com.example.lastproject.R
@@ -32,16 +35,8 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
         observeMessage()
         observeUpdateProfileState()
         observeGetProfileState()
+        listeners()
 
-
-        binding.btnUpdate.setOnClickListener {
-            viewModel.updateProfile(
-                binding.etUsername.text.toString().trim(),
-                binding.etEmail.text.toString().trim(),
-                binding.etPassword.text.toString().trim()
-
-            )
-        }
     }
 
     private fun observeGetProfileState() {
@@ -90,6 +85,15 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
                     }
                 }
             }
+        }
+    }
+    private fun listeners(){
+        binding.btnUpdate.setOnClickListener {
+            viewModel.updateProfile(
+                binding.etUsername.text.toString().trim(),
+                binding.etEmail.text.toString().trim(),
+                binding.etPassword.text.toString().trim()
+            )
         }
     }
 }
